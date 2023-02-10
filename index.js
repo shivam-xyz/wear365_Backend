@@ -12,6 +12,6 @@ app.use(router);
 
 
 
-app.listen(process.env.PORT, '127.0.0.1', () => {
+app.listen(process.env.PORT, () => {
     console.log('Server is Running')
 })
