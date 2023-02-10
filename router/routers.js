@@ -212,4 +212,12 @@ router.get('/api/orderdetail/:id', async (req, res) => {
     }
 })
 
+router.get('/api/testapi',async(req,res)=>{
+    try {
+        res.status(200).send({message:'Api Test Successfully Done'})
+    } catch (error) {
+        res.status(500).send({message:'Internal Server Error'})
+    }
+})
+
 module.exports = router
