@@ -67,9 +67,10 @@ router.post('/api/verifyuser', async (req, res) => {
 //Get All Users
 router.get('/api/allusers',async(req,res)=>{
     try {
-        const res = await User.find();
-        if(res){
-            res.status(200).send({response:res})
+        const records = await User.find().select({tokens:0});
+        
+        if(records){
+            res.status(200).send(records)
         }
         else{
             res.status(400).send({message:'Bad Request or Empty Collection'})
