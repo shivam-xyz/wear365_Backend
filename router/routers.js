@@ -17,6 +17,8 @@ const upload = multer({ storage: storage });
 //Register New User
 router.post('/api/registeruser', upload.single('myFile'), async (req, res) => {
     try {
+        // console.log(req.body);
+        // console.log(req.file);
         const image = req.file ? '/mediaFiles/' + req.file.filename : null;
         const toSave = User({ ...req.body, image });
         //Adding a middleware here for storing token in DB
@@ -38,11 +40,13 @@ router.post('/api/registeruser', upload.single('myFile'), async (req, res) => {
 //Log In User
 router.post('/api/verifyuser', async (req, res) => {
     try {
+        console.log(req.body,41)
         const isUserExist = await User.findOne({ mobile: req.body.mobile });
         if (isUserExist) {
             const isPasswordMatched = await bcrypt.compare(req.body.password, isUserExist.password);
             if (isPasswordMatched) {
                 const token = await isUserExist.generateAuthToken()
+                console.log('Res Sent Successfully')
                 res.status(200).cookie('authToken', token, {
                     httpOnly: true,
                     expires: new Date(Date.now() + 600000)
@@ -221,3 +225,30 @@ router.get('/api/testapi',async(req,res)=>{
 })
 
 module.exports = router
+
+
+
+
+
+// showDialog(
+//     context: context,
+//     builder: (ctx) => AlertDialog(
+//       title: const Text("Alert Dialog Box"),
+//       content: const Text("You have raised a Alert Dialog Box"),
+//       actions: <Widget>[
+//         TextButton(
+//           onPressed: () {
+//             Navigator.of(ctx).pop();
+//           },
+//           child: Container(
+//             color: Colors.green,
+//             padding: const EdgeInsets.all(14),
+//             child: const Text("okay"),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// },
+// child: const Text("Show alert Dialog box"),
+// ),
