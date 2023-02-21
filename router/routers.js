@@ -69,7 +69,7 @@ router.get('/api/allusers',async(req,res)=>{
     try {
         const res = await User.find();
         if(res){
-            res.status(200).send(res)
+            res.status(200).send({response:res})
         }
         else{
             res.status(400).send({message:'Bad Request or Empty Collection'})
