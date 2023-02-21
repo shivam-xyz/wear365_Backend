@@ -64,6 +64,21 @@ router.post('/api/verifyuser', async (req, res) => {
     }
 });
 
+//Get All Users
+router.get('/api/allusers',async(req,res)=>{
+    try {
+        const res = await User.find();
+        if(res){
+            res.status(200).send(res)
+        }
+        else{
+            res.status(400).send({message:'Bad Request or Empty Collection'})
+        }
+    } catch (error) {
+        res.status(500).send({message:'Internal Server Error'})
+    }
+})
+
 //Get User Profile
 router.get('/api/userProfile', auth, async (req, res) => {
     try {
