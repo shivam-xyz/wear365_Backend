@@ -41,7 +41,7 @@ router.post('/api/registeruser', upload.single('myFile'), async (req, res) => {
 router.post('/api/verifyuser', async (req, res) => {
     try {
         console.log(req.body,41)
-        const isUserExist = await User.findOne({ mobile: req.body.mobile });
+        const isUserExist = await User.findOne({ mobile: req.body.mobile }).select({tokens:0});
         if (isUserExist) {
             const isPasswordMatched = await bcrypt.compare(req.body.password, isUserExist.password);
             if (isPasswordMatched) {
@@ -50,7 +50,7 @@ router.post('/api/verifyuser', async (req, res) => {
                 res.status(200).cookie('authToken', token, {
                     httpOnly: true,
                     expires: new Date(Date.now() + 600000)
-                }).send({ message: 'User Authenticated Successfully' })
+                }).send({ message: 'User Authenticated Successfully', response : isUserExist })
             }
             else {
                 res.status(400).send({ message: 'Incorrect Password' })
