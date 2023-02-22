@@ -148,13 +148,25 @@ router.post('/api/menu', upload.single('myFile'), async (req, res) => {
         // console.log(116, req.body);
         // console.log(117, req.file)
         const image = req.file ? '/mediaFiles/' + req.file.filename : null;
-        const toSave = new Menu({ ...req.body, image });
-        const results = await toSave.save();
-        if (results) {
-            res.status(201).send({ message: 'Menu Created Successfully' })
+        if (image == null) {
+            const toSave = new Menu({ ...req.body });
+            const results = await toSave.save();
+            if (results) {
+                res.status(201).send({ message: 'Menu Created Successfully' })
+            }
+            else {
+                res.status(400).send({ message: 'Failed to create Menu' })
+            }
         }
         else {
-            res.status(400).send({ message: 'Failed to create Menu' })
+            const toSave = new Menu({ ...req.body, image });
+            const results = await toSave.save();
+            if (results) {
+                res.status(201).send({ message: 'Menu Created Successfully' })
+            }
+            else {
+                res.status(400).send({ message: 'Failed to create Menu' })
+            }
         }
     } catch (error) {
         res.status(500).send({ message: 'Internal Server Error' })

@@ -159,7 +159,8 @@ const menuSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        required: false,
+        default: "/mediaFiles/1674536780038_chilli.webp"
     },
     foodType: {
         type: String,
