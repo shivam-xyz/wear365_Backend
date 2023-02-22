@@ -1,7 +1,7 @@
 require('./db/connections');
 const express = require('express');
 const app = express();
-app.use('/temp/mediaFiles', express.static('/temp/mediaFiles'))
+app.use('/mediaFiles', express.static('mediaFiles'))
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
