@@ -99,7 +99,7 @@ const restaurantSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        required: false
     },
     restaurantType: {
         type: String,
@@ -154,7 +154,7 @@ const menuSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        required: false
     },
     image: {
         type: String,
