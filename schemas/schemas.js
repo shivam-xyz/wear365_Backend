@@ -99,7 +99,8 @@ const restaurantSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: false
+        required: false,
+        default: "/mediaFiles/1674535977132_chowmein.jpg"
     },
     restaurantType: {
         type: String,

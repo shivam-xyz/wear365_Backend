@@ -40,7 +40,7 @@ router.post('/api/registeruser', upload.single('myFile'), async (req, res) => {
 //Log In User
 router.post('/api/verifyuser', async (req, res) => {
     try {
-        console.log(req.body,41)
+        console.log(req.body, 41)
         const isUserExist = await User.findOne({ mobile: req.body.mobile });
         if (isUserExist) {
             const isPasswordMatched = await bcrypt.compare(req.body.password, isUserExist.password);
@@ -50,7 +50,7 @@ router.post('/api/verifyuser', async (req, res) => {
                 res.status(200).cookie('authToken', token, {
                     httpOnly: true,
                     expires: new Date(Date.now() + 600000)
-                }).send({ message: 'User Authenticated Successfully', response : isUserExist })
+                }).send({ message: 'User Authenticated Successfully', response: isUserExist })
             }
             else {
                 res.status(400).send({ message: 'Incorrect Password' })
@@ -65,18 +65,18 @@ router.post('/api/verifyuser', async (req, res) => {
 });
 
 //Get All Users
-router.get('/api/allusers',async(req,res)=>{
+router.get('/api/allusers', async (req, res) => {
     try {
-        const records = await User.find().select({tokens:0});
-        
-        if(records){
+        const records = await User.find().select({ tokens: 0 });
+
+        if (records) {
             res.status(200).send(records)
         }
-        else{
-            res.status(400).send({message:'Bad Request or Empty Collection'})
+        else {
+            res.status(400).send({ message: 'Bad Request or Empty Collection' })
         }
     } catch (error) {
-        res.status(500).send({message:'Internal Server Error'})
+        res.status(500).send({ message: 'Internal Server Error' })
     }
 })
 
@@ -100,13 +100,25 @@ router.get('/api/userProfile', auth, async (req, res) => {
 router.post('/api/restaurant', upload.single('myFile'), async (req, res) => {
     try {
         const image = req.file ? '/mediaFiles/' + req.file.filename : null;
-        const toSave = Restaurant({ ...req.body, image });
-        const results = await toSave.save();
-        if (results) {
-            res.status(201).send({ message: 'Restaurant Created Successfully' })
+        if (image == null) {
+            const toSave = Restaurant({ ...req.body });
+            const results = await toSave.save();
+            if (results) {
+                res.status(201).send({ message: 'Restaurant Created Successfully' })
+            }
+            else {
+                res.status(400).send({ message: 'Failed to Create Restaurant' })
+            }
         }
         else {
-            res.status(400).send({ message: 'Failed to Create Restaurant' })
+            const toSave = Restaurant({ ...req.body, image });
+            const results = await toSave.save();
+            if (results) {
+                res.status(201).send({ message: 'Restaurant Created Successfully' })
+            }
+            else {
+                res.status(400).send({ message: 'Failed to Create Restaurant' })
+            }
         }
         // console.log(req.body)
         // console.log(req.file)
@@ -202,13 +214,13 @@ router.get('/api/allorders', async (req, res) => {
 router.get('/api/activeorder', auth, async (req, res) => {
     try {
         const userId = req.USER_ID;
-        console.log(185,userId)
-        const data = await Order.find({user:userId}).populate({path:'orderDetails.item'}).populate({path:'orderDetails.restaurant'}) ;
-        if(data){
+        console.log(185, userId)
+        const data = await Order.find({ user: userId }).populate({ path: 'orderDetails.item' }).populate({ path: 'orderDetails.restaurant' });
+        if (data) {
             res.status(200).send(data);
         }
-        else{
-            res.status(400).send({message:'Failed to Fetche Data'});
+        else {
+            res.status(400).send({ message: 'Failed to Fetche Data' });
         }
     } catch (error) {
         res.status(500).send({ message: 'Internal Server Error' })
@@ -220,23 +232,23 @@ router.get('/api/orderdetail/:id', async (req, res) => {
     try {
         const _id = req.params.id
         // console.log(202,_id)
-        const data = await Order.findById({_id:_id}).populate({path:'orderDetails.restaurant'}).populate({path:'orderDetails.item'}).populate({path:'user',select:{tokens:0,password:0}}) ;
-        if(data){
+        const data = await Order.findById({ _id: _id }).populate({ path: 'orderDetails.restaurant' }).populate({ path: 'orderDetails.item' }).populate({ path: 'user', select: { tokens: 0, password: 0 } });
+        if (data) {
             res.status(200).send(data);
         }
-        else{
-            res.status(400).send({message:'Failed to Fetch Data'});
+        else {
+            res.status(400).send({ message: 'Failed to Fetch Data' });
         }
     } catch (error) {
         res.status(500).send({ message: 'Internal Server Error' })
     }
 })
 
-router.get('/api/testapi',async(req,res)=>{
+router.get('/api/testapi', async (req, res) => {
     try {
-        res.status(200).send({message:'Api Test Successfully Done'})
+        res.status(200).send({ message: 'Api Test Successfully Done' })
     } catch (error) {
-        res.status(500).send({message:'Internal Server Error'})
+        res.status(500).send({ message: 'Internal Server Error' })
     }
 })
 
