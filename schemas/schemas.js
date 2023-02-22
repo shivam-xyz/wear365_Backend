@@ -122,6 +122,7 @@ const restaurantSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+
 const menuSchema = new mongoose.Schema({
     name: {
         type: String,

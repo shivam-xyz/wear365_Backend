@@ -161,6 +161,7 @@ router.post('/api/menu', upload.single('myFile'), async (req, res) => {
         else {
             const toSave = new Menu({ ...req.body, image });
             const results = await toSave.save();
+            console.log(results);
             if (results) {
                 res.status(201).send({ message: 'Menu Created Successfully' })
             }
